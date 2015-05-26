@@ -381,7 +381,7 @@ define('dahuapp', [
             screencastController.screencast.model.setScreenHeight(capture.screenSize.getHeight());
         };
         // Refresh the workspace
-        onScreenSelect(screen);
+        // onScreenSelect(screen);
     }
 
     /**
@@ -406,7 +406,7 @@ define('dahuapp', [
         if (id == nbOfScreens -1) {
             id --;
         }
-        onScreenSelect(screencastModel.get('screens').at(id));
+        // onScreenSelect(screencastModel.get('screens').at(id));
     }
 
     /**
