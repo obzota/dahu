@@ -1,6 +1,13 @@
-<div class="appear">
-    {{type}}
-    {{target}}
-    {{trigger}}
-    {{duration}}
-</div>
+<strong>{{type}}</strong> <br>
+
+Target : <select id="targetChoice">
+	{{!-- #each objects--}}
+	<!-- <option value="{{id}}">{{type}}</option> -->
+	{{!--\each--}}
+</select> <br>
+
+Trigger : <select id="triggerChoice">
+<option value="click">Click</option>
+</select> <br>
+
+Duration : <input id="durationInput" value={{duration}}>

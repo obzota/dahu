@@ -65,8 +65,9 @@ define([
 
         // We select the ItemView depending on the object type.
         getChildView: function(item){
-            // if(item instanceof AppearModel) {
-            //     return AppearView;
+            if(item instanceof AppearModel) {
+                 return AppearView;
+             }
             // }else if(item instanceof DisappearModel){
             //     return DisappearView;
             // }else if(item instanceof MoveModel){
