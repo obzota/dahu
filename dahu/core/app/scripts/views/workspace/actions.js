@@ -9,6 +9,7 @@ define([
     'models/actions/appear',
     'models/actions/disappear',
     'models/actions/move',
+    'models/action',
     // views
     'views/workspace/actions/appear',
     'views/workspace/actions/disappear',
@@ -23,6 +24,7 @@ define([
     AppearModel,
     DisappearModel,
     MoveModel,
+    ActionModel,
     // views
     AppearView,
     DisappearView,
@@ -43,35 +45,49 @@ define([
 
         initialize : function (options) {
             // mandatory arguments
-            this.screencast = options.screencast;
-            this.screenId = options.screenId;
+            _.extend(this, _.pick(options, ['screencast', 'screenId']));
 
-            this.collection = this.screencast.model.getScreenById(this.screenId).get('actions');
+            // initialize collection with action models
+            this.collection = this.screencast.model.getScreenById(this.screenId).get("actions");
 
-            /*@remove
-            // Specify that the collection we want to iterate, for the childView, is
-            // given by the attribute actions.
-            if (this.model != null) {
-                this.collection = this.model.get('actions');
-                // Tell the view to render itself when the
-                // model/collection is changed.
-                this.model.on('change', this.onChanged(), this);
-                if (this.collection != null) {
-                    this.collection.on('change', this.onChanged(), this);
-                }
-            }*/
+            // Options given to the constructor of the views
+            this.childViewOptions = {
+                screencast: this.screencast,
+                screenId: this.screenId
+            };
+
         },
 
-        getChildView: function(item){
-            return ActionView;
+        // specify which class will be used
+        // to generate view for each model
+        getChildView: function(item) {
+            switch (item.get('type')) {
+                case "disappear":
+                    return DisappearView;
+                case "move":
+                    return MoveView;
+                case "appear":
+                    return AppearView;
+            }
         },
 
-        onChanged: function(){
-            this.render();
-        },
-
-        modelEvents: {
-            'change': 'onChanged'
+        /**
+         * iterate on the collection to minimize
+         * each action in the action list, so user
+         * don't have to toggle them off by itself.
+         *
+         * This function is called when a child view
+         * triggers the event "select"
+         *
+         * @param  {ActionView} viewSelected the view selected by the user
+         */
+        onChildviewSelect: function (viewSelected) {
+            this.children.each(function(view){
+                if (view !== viewSelected) {
+                    view.setToggle(false);
+                };
+            });
         }
+
     });
 });
