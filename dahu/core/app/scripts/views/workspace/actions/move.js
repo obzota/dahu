@@ -42,7 +42,13 @@ define([
         },
 
         onChildviewMoveTryChange: function () {
-            this.model.set("trY", $("#trYChoice_" + this.model.id).val());
+            var value = $("#trYChoice_" + this.model.id).val();
+            if (!_.isNaN(parseInt(value))) {
+                kernel.console.log("ok !");
+                this.model.set("trY", parseInt(value));
+            } else {
+                kernel.console.log("ko ...");
+            }
         },
 
         onShow: function () {
